@@ -1,28 +1,40 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <word-cloud></word-cloud>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import wordCloud from './components/wordCloud'
+document.body.parentNode.style.overflowY = "hidden";
+document.body.parentNode.style.overflowX = "hidden";
 export default {
   name: 'App',
+  data(){
+    return{
+      
+    }
+  },
   components: {
-    HelloWorld
+    wordCloud
   }
 }
 </script>
 
-<style>
+<style lang='scss'>
+@font-face {
+  font-family: 'handfont';
+  src: url('static/喜鹊在山林.TTF');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body{
+  margin:0px;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
