@@ -3,7 +3,7 @@
         <div style="height:5vh;width:100vw;">
             <!-- <div style="box-shadow: 0px 0px 50px #fff;width:50px;height:50px;background:white"></div> -->
         </div>
-        <div id="wordcloud" style="min-height:95vh;width:100vw" @click="clickWordcloud">
+        <div ref='wordcloud' id="wordcloud" style="min-height:95vh;width:100vw" @click="clickWordcloud">
         </div>
     </div>
 </template>
@@ -11,8 +11,14 @@
 <script>
 import Js2WordCloud from 'js2wordcloud'
 export default {
+    props:[
+        'type'
+    ],
     data(){
         return{
+            minFontSize:20,
+            maxFontSize:140,
+
             wc:undefined,
             tooltip:"",
             maleWords:[],
@@ -20,22 +26,37 @@ export default {
         }
     },
     mounted(){
-        this.initWordsFromJson()
+        if(window.innerWidth < 960){
+            console.log('window width:'+window.innerWidth)
+            this.minFontSize = 18
+            this.maxFontSize = 110
+        }
 
-        this.wc = new Js2WordCloud(document.getElementById('wordcloud'))
+        this.initWordsFromJson()
+        let words = []
+        if(this.type === 'male'){
+            words = this.maleWords
+        }
+        if(this.type === 'female'){
+            words = this.femaleWords
+        }
+
+        this.wc = new Js2WordCloud(this.$refs.wordcloud)
         var option = {
             tooltip: {
                 show: true
             },
-            list: this.maleWords,
+            list: words,
             color: 'white',
             fontFamily:'handfont',
-            minFontSize:20,
-            maxFontSize:140,
+            minFontSize:this.minFontSize,
+            maxFontSize:this.maxFontSize,
             backgroundColor:"rgba(0,0,0,0)",
             shape:'triangle'
         }
-        this.wc.setOption(option)
+        setTimeout(()=>{
+            this.wc.setOption(option)
+        }, 1000)
         this.tooltip = this.wc._tooltip
     },
     methods:{
@@ -47,6 +68,7 @@ export default {
                 for(let i in wordsObj){
                     wordsArray.push([i, wordsObj[i]])
                 }
+                wordsArray.sort(()=>Math.random(1)-0.5)
                 return wordsArray
             }
             this.maleWords = objToArray(maleObj)
