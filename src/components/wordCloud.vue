@@ -56,8 +56,8 @@ export default {
         }
         setTimeout(()=>{
             this.wc.setOption(option)
+            this.tooltip = this.wc._tooltip
         }, 1000)
-        this.tooltip = this.wc._tooltip
     },
     methods:{
         initWordsFromJson(){
